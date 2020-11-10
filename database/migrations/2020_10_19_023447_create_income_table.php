@@ -18,19 +18,19 @@ class CreateIncomeTable extends Migration
             $table->id();
 
             // Тип поступления
-            $table->integer('income_types_id')->unsigned();
-            $table->foreign('income_types_id')
-                ->references('id')->on('income_types');
+            $table->string('income_types')->unsigned();
+            $table->foreign('income_types')
+                ->references('name')->on('income_types');
 
             // Единица измерения (по умолчанию рубли)
-            $table->integer('units')->unsigned();
+            $table->string('units')->unsigned();
             $table->foreign('units')
-                ->references('id')->on('units');
+                ->references('name')->on('units');
 
             // Вид расчёта
-            $table->integer('calculation_types_id')->unsigned();
-            $table->foreign('calculation_types_id')
-                ->references('id')->on('calculation_types');
+            $table->string('calculation_types')->unsigned();
+            $table->foreign('calculation_types')
+                ->references('name')->on('calculation_types');
 
             // Значение поступления
             $table->float('value');

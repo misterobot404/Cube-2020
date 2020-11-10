@@ -14,10 +14,9 @@ class CreateSalaryTypeTable extends Migration
      */
     public function up()
     {
-        Schema::create('salary_type', function (Blueprint $table) {
-            $table->id();
+        Schema::create('salary_types', function (Blueprint $table) {
             // Название типа
-            $table->string("name");
+            $table->string("name")->primary();
         });
     }
 

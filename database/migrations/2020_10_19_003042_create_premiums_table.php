@@ -17,7 +17,7 @@ class CreatePremiumsTable extends Migration
         Schema::create('premiums', function (Blueprint $table) {
             $table->id();
             // Id работника
-            $table->integer('worker_id')->unsigned();
+            $table->integer('employee_id')->unsigned();
             $table->foreign('worker_id')
                 ->references('id')->on('workers');
             // Дата назначения премии
@@ -25,9 +25,9 @@ class CreatePremiumsTable extends Migration
             // Размер премии
             $table->float('value');
             // Начислено
-            $table->string('accrual');
+            $table->float('accrual');
             // Выплачено
-            $table->string('pay');
+            $table->float('pay');
         });
     }
 

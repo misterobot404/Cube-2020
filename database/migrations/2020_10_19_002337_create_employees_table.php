@@ -14,12 +14,12 @@ class CreateWorkersTable extends Migration
      */
     public function up()
     {
-        Schema::create('workers', function (Blueprint $table) {
+        Schema::create('employees', function (Blueprint $table) {
             $table->id();
             // Id должности
-            $table->integer('position_id')->unsigned();
-            $table->foreign('position_id')
-                ->references('id')->on('positions');
+            $table->string('position')->unsigned();
+            $table->foreign('position')
+                ->references('name')->on('positions');
             // Дата трудоустройства
             $table->dateTime("date_in");
             // Дата увольнения

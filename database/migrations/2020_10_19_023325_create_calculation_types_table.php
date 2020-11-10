@@ -14,8 +14,7 @@ class CreateCalculationTypesTable extends Migration
     public function up()
     {
         Schema::create('calculation_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->string('name')->primary();
         });
     }
 

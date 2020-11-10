@@ -40,9 +40,9 @@
 
 <script>
 export default {
-    name: "Home",
+    name: "Analytics",
     data: () => ({
-        cards: ['Today', 'Yesterday'],
+        cards: ['Today', 'Yesterday', 'End'],
     }),
 }
 </script>

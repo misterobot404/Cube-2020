@@ -22,16 +22,16 @@ class CreateSalaryTable extends Migration
             $table->foreign('worker_id')
                 ->references('id')->on('workers');
             // Id сотрудника
-            $table->integer('salary_type_id')->unsigned();
-            $table->foreign('salary_type_id')
-                ->references('id')->on('salary_type');
+            $table->string('salary_type')->unsigned();
+            $table->foreign('salary_type')
+                ->references('name')->on('salary_type');
 
             // Размер зарплаты
             $table->float('value');
             // Начислено
-            $table->string('accrual');
+            $table->float('accrual');
             // Выплачено
-            $table->string('pay');
+            $table->float('pay');
         });
     }
 

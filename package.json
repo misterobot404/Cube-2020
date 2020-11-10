@@ -20,6 +20,7 @@
         "sass": "^1.27.0",
         "sass-loader": "^10.0.4",
         "vue": "^2.6.12",
+        "vue-json-excel": "^0.3.0",
         "vue-router": "^3.3.4",
         "vue-template-compiler": "^2.6.12",
         "vuetify": "^2.3.16",

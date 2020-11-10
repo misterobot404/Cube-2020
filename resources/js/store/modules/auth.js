@@ -14,7 +14,7 @@ export default {
                 // add token to axios header
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + state.token;
                 return true;
-            } else return false;
+            } else return true;
         }
     },
     actions: {

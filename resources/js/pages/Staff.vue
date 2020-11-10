@@ -1,5 +1,6 @@
 <template>
     <div>
+        Персонал
     </div>
 </template>
 

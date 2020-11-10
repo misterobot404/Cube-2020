@@ -11,7 +11,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    // проверка доступа к этому роуту
+    // authorization
     if (to.matched.some(record => record.name !== "login") && !store.getters['auth/isAuth'])
         next({ name: 'login', query: { redirect: to.fullPath }})
     else next()

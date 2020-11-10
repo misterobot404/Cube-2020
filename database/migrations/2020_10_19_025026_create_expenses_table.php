@@ -17,19 +17,25 @@ class CreateExpensesTable extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('expense_type_id')->unsigned();
-            $table->foreign('expense_type_id')
-                ->references('id')->on('expense_type');
+            $table->string('expense_type')->unsigned();
+            $table->foreign('expense_type')
+                ->references('name')->on('expense_type');
 
-            $table->integer('units')->unsigned();
+            $table->string('units')->unsigned();
             $table->foreign('units')
-                ->references('id')->on('units');
+                ->references('name')->on('units');
 
+            // Размер
             $table->float('value');
-            $table->dateTime('date');
+            // Начислено
+            $table->float('accrual');
+            // Выплачено
+            $table->float('pay');
 
-            $table->string('description');
-            $table->string('comment');
+            $table->string('description')->nullable();
+            $table->string('comment')->nullable();
+
+            $table->dateTime('date');
         });
     }
 

@@ -16,15 +16,15 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('sale_type_id')->unsigned();
-            $table->foreign('sale_type_id')
-                ->references('id')->on('sales_type');
+            $table->string('sale_type')->unsigned();
+            $table->foreign('sale_type')
+                ->references('name')->on('sales_type');
 
-            $table->integer('units')->unsigned();
+            $table->string('units')->unsigned();
             $table->foreign('units')
-                ->references('id')->on('units');
+                ->references('name')->on('units');
 
-            $table->integer('value');
+            $table->float('value');
             $table->dateTime('date');
         });
     }

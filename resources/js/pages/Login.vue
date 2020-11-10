@@ -2,6 +2,7 @@
     <v-dialog
         :value="true"
         persistent
+        hide-overlay
         max-width="460"
     >
         <!-- Dialog -->
