@@ -1,6 +1,6 @@
 <template>
     <v-dialog
-        :value="true"
+        :value="!isAuth"
         persistent
         hide-overlay
         max-width="460"
@@ -18,7 +18,7 @@
                 >
                     login
                 </v-icon>
-                <v-toolbar-title> Авторизация</v-toolbar-title>
+                <v-toolbar-title>Авторизация</v-toolbar-title>
             </v-toolbar>
             <v-divider/>
             <!-- Body -->
@@ -80,29 +80,28 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
     name: "Login",
-    data() {
-        return {
-            email: "",
-            password: "",
-            showError: false,
-            passwordShow: false,
-            valid: false,
-            authProcess: false,
-            rules: {
-                email: [
-                    v => {
-                        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                        return !v || pattern.test(v) || 'Введите корректный адрес электронной почты.'
-                    }
-                ]
-            }
+    data: () => ({
+        email: "",
+        password: "",
+        showError: false,
+        passwordShow: false,
+        valid: false,
+        authProcess: false,
+        rules: {
+            email: [
+                v => {
+                    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return !v || pattern.test(v) || 'Введите корректный адрес электронной почты.'
+                }
+            ]
         }
-    },
+    }),
     computed: {
+        ...mapGetters('auth',["isAuth"]),
         filled() {
             return this.email.length !== 0 && this.password.length !== 0
         }

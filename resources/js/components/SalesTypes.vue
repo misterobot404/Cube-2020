@@ -1,0 +1,212 @@
+<template>
+    <v-card class="fill-height">
+        <!-- Header -->
+        <v-card-title class="font-weight-regular">
+            <v-icon class="mr-2">fastfood</v-icon>
+            Виды продаж
+            <v-spacer/>
+            <!-- Add -->
+            <CreateDialog/>
+            <!-- Update -->
+            <v-tooltip bottom v-if="$vuetify.breakpoint.smAndUp">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        @click="getSalesTypes(true)"
+                        icon
+                        large
+                        class="mr-1"
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                        <v-icon size="24">
+                            update
+                        </v-icon>
+                    </v-btn>
+                </template>
+                <span>Обновить</span>
+            </v-tooltip>
+            <!-- Excel -->
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                    <download-excel :data="sales_types" name="Виды продаж">
+                        <v-btn
+                            @click=""
+                            icon
+                            large
+                            class="mr-1"
+                            v-bind="attrs"
+                            v-on="on"
+                        >
+                            <v-icon size="24">
+                                description
+                            </v-icon>
+                        </v-btn>
+                    </download-excel>
+                </template>
+                <span>Excel</span>
+            </v-tooltip>
+            <!-- Print -->
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        @click="print()"
+                        icon
+                        large
+                        class="mr-4"
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                        <v-icon size="24">
+                            print
+                        </v-icon>
+                    </v-btn>
+                </template>
+                <span>Печать</span>
+            </v-tooltip>
+            <!-- Search -->
+            <v-text-field
+                v-model="search"
+                append-icon="search"
+                label="Поиск"
+                single-line
+                hide-details
+                class="pt-sm-0 mt-sm-0"
+            />
+        </v-card-title>
+        <!-- Table -->
+        <v-data-table
+            :loading="loading"
+            :search="search"
+            loader-height="2px"
+            :headers="headers"
+            show-select
+            :items-per-page="15"
+            :items="sales_types"
+        >
+            <!-- edit value -->
+            <template v-slot:item.name="props">
+                <v-edit-dialog
+                    :return-value.sync="props.item.name"
+                    @open="props.item.old_name = props.item.name"
+                    @save="updateSalesTypes(props.item)"
+                >
+                    {{ props.item.name }}
+                    <template v-slot:input>
+                        <v-text-field
+                            v-model="props.item.name"
+                            label="Изменить"
+                            single-line
+                        />
+                    </template>
+                </v-edit-dialog>
+            </template>
+            <!-- Item actions -->
+            <template v-slot:item.actions="{ item }">
+                <!-- Delete -->
+                <v-icon
+                    @click="destroySalesTypes(item)"
+                >
+                    delete_outline
+                </v-icon>
+            </template>
+        </v-data-table>
+    </v-card>
+</template>
+
+<script>
+import Vue from 'vue'
+import JsonExcel from "vue-json-excel";
+import {mapMutations, mapState, mapActions} from "vuex"
+import CreateDialog from "./SalesTypesCreateDialog";
+
+Vue.component("downloadExcel", JsonExcel);
+
+export default {
+    name: "SalesTypes",
+    components: {CreateDialog},
+    data: () => ({
+        headers: [
+            {
+                text: 'Название',
+                value: 'name',
+            },
+            {
+                text: '',
+                value: 'actions',
+                sortable: false,
+                align: 'right'
+            }
+        ],
+        search: null,
+        loading: false,
+    }),
+    computed: {
+        ...mapState({
+            sales_types: state => state.sales_types.sales_types
+        }),
+    },
+    methods: {
+        ...mapActions('sales_types', [
+            "index",
+            "store",
+            "update",
+            "destroy"
+        ]),
+        ...mapMutations('layout', [
+            "TOGGLE_SHOW_LAYOUT",
+            "TOGGLE_SHOW_MESSAGE"
+        ]),
+
+        getSalesTypes(resultMsg = false) {
+            this.loading = true;
+            this.index()
+                .then(() => {
+                    if (resultMsg) {
+                        this.TOGGLE_SHOW_MESSAGE({type: 'primary', text: "Данные обновлены"});
+                    }
+                })
+                .catch(() => {
+                    this.TOGGLE_SHOW_MESSAGE({type: 'error', text: "Ошибка"});
+                })
+                .finally(() => {
+                    this.loading = false;
+                })
+        },
+        updateSalesTypes(sales_types) {
+            this.loading = true;
+            this.update(sales_types)
+                .then(() => {
+                    this.TOGGLE_SHOW_MESSAGE({type: 'primary', text: "Данные изменены"});
+                })
+                .catch(() => {
+                    sales_types.name = sales_types.old_name
+                    this.TOGGLE_SHOW_MESSAGE({type: 'error', text: "Ошибка"});
+                })
+                .finally(() => {
+                    this.loading = false;
+                })
+        },
+        destroySalesTypes(sales_types) {
+            this.loading = true;
+            this.destroy(sales_types.name)
+                .then(() => {
+                    this.TOGGLE_SHOW_MESSAGE({type: 'primary', text: "Данные удалены"});
+                })
+                .catch(() => {
+                    this.TOGGLE_SHOW_MESSAGE({type: 'error', text: "Ошибка"});
+                })
+                .finally(() => {
+                    this.loading = false;
+                })
+        },
+        print() {
+            this.TOGGLE_SHOW_LAYOUT();
+            setTimeout(() => {
+                window.print();
+                this.TOGGLE_SHOW_LAYOUT();
+            }, 300);
+        }
+    }
+}
+</script>
+

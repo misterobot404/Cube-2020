@@ -1,40 +1,49 @@
+import Main from "../pages/Main";
+import Staff from "../pages/Staff";
+import Incomes from "../pages/Incomes";
+import Expenses from "../pages/Expenses";
+import IncomesTypes from "../pages/IncomesTypes";
+import ExpensesTypes from "../pages/ExpensesTypes";
+import Sales from "../pages/Sales";
+import Directory from "../pages/Directory";
+import Login from "../pages/Login";
+
 export const routes = [
     {
         path: '/',
-        component: () => import('@/pages/Main')
+        component: Main
     },
     {
         path: '/staff',
-        component: () => import('@/pages/Staff')
+        component: Staff
     },
     {
-        path: '/chat',
-        component: () => import('@/pages/Chat')
-    },
-    {
-        path: '/sales',
-        component: () => import('@/pages/Sales')
+        path: '/incomes',
+        component: Incomes
     },
     {
         path: '/expenses',
-        component: () => import('@/pages/Expenses')
+        component: Expenses
+    },
+    {
+        path: '/incomes_types',
+        component: IncomesTypes
+    },
+    {
+        path: '/expenses_types',
+        component: ExpensesTypes
+    },
+    {
+        path: '/sales',
+        component: Sales
+    },
+    {
+        path: '/directory',
+        component: Directory
     },
     {
         path: '/login',
-        name: 'login',
-        component: () => import('@/pages/Login')
-    },
-    {
-        path: '/sales_type',
-        component: () => import('@/pages/directories/Sales_type')
-    },
-    {
-        path: '/expense_type',
-        component: () => import('@/pages/directories/Expense_type')
-    },
-    {
-        path: '/units',
-        component: () => import('@/pages/directories/Units')
+        component: Login
     },
     {
         path: '*',

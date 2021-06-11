@@ -13,20 +13,22 @@
                 two-line
             >
                 <v-list-item-avatar style="padding: 45px 0" size="48">
-                    <v-img src="/images/avatars/admin.jpg"></v-img>
+                    <v-img :src="user.avatar"></v-img>
                 </v-list-item-avatar>
                 <v-list-item-content class="white--text">
                     <v-list-item-title style="white-space: normal">
-                        Амирханов Илья Ильгизович
+                        {{ user.name }}
                     </v-list-item-title>
-                    <v-list-item-subtitle class="caption white--text">admin@admin.com</v-list-item-subtitle>
+                    <v-list-item-subtitle class="caption white--text">
+                        {{ user.email }}
+                    </v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
             <!-- List -->
             <v-list nav>
-                <!-- Pages -->
+                <!-- Links 1 -->
                 <v-list-item
-                    v-for="[icon, text, link] in navigationLinks"
+                    v-for="[icon, text, link] in links1"
                     :key="text"
                     :to="link"
                     :color="$vuetify.theme.dark ? null : 'primary'"
@@ -40,19 +42,19 @@
                         <v-list-item-title>{{ text }}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <!-- Directory -->
-                <v-list-group>
+                <!-- Links 2 -->
+                <v-list-group :value="links2.map(x => x[1]).includes($route.path)">
                     <template v-slot:activator>
                         <v-list-item-icon>
-                            <v-icon>book</v-icon>
+                            <v-icon>article</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
-                            <v-list-item-title>Справочник</v-list-item-title>
+                            <v-list-item-title>Статьи</v-list-item-title>
                         </v-list-item-content>
                     </template>
 
                     <v-list-item
-                        v-for="[text,link] in navigationLinksInSection"
+                        v-for="[text,link] in links2"
                         dense
                         :to="link"
                         :key="text"
@@ -68,6 +70,22 @@
                         </v-list-item-content>
                     </v-list-item>
                 </v-list-group>
+                <!-- Links 3 -->
+                <v-list-item
+                    v-for="[icon, text, link] in links3"
+                    :key="text"
+                    :to="link"
+                    :color="$vuetify.theme.dark ? null : 'primary'"
+                    class="mb-1"
+                >
+                    <v-list-item-icon>
+                        <v-icon>{{ icon }}</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>{{ text }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
                 <!-- Settings -->
                 <v-list-item @click="TOGGLE_SETTINGS_DIALOG">
                     <v-list-item-icon>
@@ -78,30 +96,60 @@
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
+            <template v-slot:append>
+                <v-btn depressed block @click="Logout" :loading="logoutProcess">
+                    <v-icon
+                        :class="navigationDrawerDynamic ? null : 'mr-2'"
+                        style="opacity: 0.8"
+                    >
+                        transit_enterexit
+                    </v-icon>
+                    <span v-if="!navigationDrawerDynamic">Logout</span>
+                </v-btn>
+            </template>
         </v-navigation-drawer>
     </div>
 </template>
 
 <script>
-import {mapMutations, mapState} from 'vuex';
+import {mapMutations, mapState, mapActions} from 'vuex';
 
 export default {
     name: "NavigationDrawer",
-    data: () => ({}),
+    data: () => ({
+        links1: [
+            ['insights', 'Аналитика', '/'],
+            ['people_outline', 'Пользователи', '/staff'],
+            ['attach_money', 'Приход', '/incomes'],
+            ['money_off', 'Расход', '/expenses'],
+        ],
+        links2: [
+            ['Статьи прихода', '/incomes_types'],
+            ['Статьи расхода', '/expenses_types'],
+        ],
+        links3: [
+            ['fastfood', 'Продажи', '/sales'],
+            ['book', 'Справочник', '/directory'],
+        ],
+        logoutProcess: false,
+    }),
     computed: {
-        ...mapState('layout_settings', [
-            "navigationLinks",
-            "navigationDrawerDynamic",
-            "navigationLinksInSection"
-        ])
+        ...mapState({
+            navigationDrawerDynamic: state => state.layout.navigationDrawerDynamic,
+            user: state => state.auth.user,
+        })
     },
     methods: {
-        ...mapMutations('layout_settings',[
+        ...mapMutations('layout', [
             "TOGGLE_SETTINGS_DIALOG"
-        ])
+        ]),
+        ...mapActions('auth', ["logout"]),
+        Logout() {
+            this.logoutProcess = true;
+
+            this.logout()
+                .finally(() => {this.logoutProcess = false;})
+        },
     }
 }
 </script>
-
-<style scoped>
-</style>

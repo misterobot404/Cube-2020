@@ -37,7 +37,7 @@ export default {
         dialog: false
     }),
     computed: {
-        ...mapState('layout_settings', [
+        ...mapState('layout', [
             "settingsDialog",
             "bottomNavigationShift",
             "navigationDrawerDynamic",
@@ -56,7 +56,7 @@ export default {
             },
             set(val) {
                 this.$vuetify.theme.dark = val;
-                localStorage.setItem('layout_settings_darkTheme', val);
+                localStorage.setItem('layout_darkTheme', val);
             }
         },
         bottomNavigationShift_model: {
@@ -77,7 +77,7 @@ export default {
         },
     },
     methods: {
-        ...mapMutations('layout_settings', [
+        ...mapMutations('layout', [
             "TOGGLE_SETTINGS_DIALOG",
             "TOGGLE_BOTTOM_NAVIGATION_SHIFT",
             "TOGGLE_NAVIGATION_DRAWER_DYNAMIC"

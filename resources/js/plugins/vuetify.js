@@ -5,7 +5,7 @@ Vue.use(Vuetify);
 
 export default new Vuetify({
     theme: {
-        dark: localStorage.getItem('layout_settings_darkTheme') === "true"
+        dark: localStorage.getItem('layout_darkTheme') === "true"
     },
     icons: {
         iconfont: 'md',

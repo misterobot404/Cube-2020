@@ -34,7 +34,8 @@ class AuthController extends Controller
         $user = User::create([
             'name' => request('name'),
             'email' => request('email'),
-            'password' => bcrypt(request('password'))
+            'password' => bcrypt(request('password')),
+            'role' => request('role')
         ]);
 
         if (!$user) {
@@ -123,5 +124,14 @@ class AuthController extends Controller
         $accessToken->revoke();
 
         return response()->json(["status" => "success", "data" => null], 200);
+    }
+
+    public function getUsers()
+    {
+        return response()->json([
+            "status" => "success",
+            "data" => [
+                "users" => User::all()
+            ]], 200);
     }
 }

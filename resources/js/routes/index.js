@@ -11,9 +11,11 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    // authorization
-    if (to.matched.some(record => record.name !== "login") && !store.getters['auth/isAuth'])
-        next({ name: 'login', query: { redirect: to.fullPath }})
+
+    if (to.matched.some(record => record.path === "/login") && store.getters['auth/isAuth']) next(from);
+
+    if (to.matched.some(record => record.path !== "/login") && !store.getters['auth/isAuth'])
+        next({ path: '/login', query: { redirect: to.fullPath }})
     else next()
 });
 

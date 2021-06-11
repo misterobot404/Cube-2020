@@ -18,11 +18,11 @@ class CreateSalesTable extends Migration
 
             $table->string('sale_type')->unsigned();
             $table->foreign('sale_type')
-                ->references('name')->on('sales_type');
+                ->references('name')->on('sales_types')->onUpdate('cascade')->onDelete('no action');
 
             $table->string('units')->unsigned();
             $table->foreign('units')
-                ->references('name')->on('units');
+                ->references('name')->on('units')->onUpdate('cascade')->onDelete('no action');
 
             $table->float('value');
             $table->dateTime('date');

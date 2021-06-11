@@ -19,18 +19,22 @@ class CreateExpensesTable extends Migration
 
             $table->string('expense_type')->unsigned();
             $table->foreign('expense_type')
-                ->references('name')->on('expense_type');
+                ->references('name')->on('expenses_types')->onUpdate('cascade')->onDelete('no action');
 
-            $table->string('units')->unsigned();
-            $table->foreign('units')
-                ->references('name')->on('units');
+            // Вид расчёта
+            $table->string('payment_type')->unsigned();
+            $table->foreign('payment_type')
+                ->references('name')->on('payment_types')->onUpdate('cascade')->onDelete('no action');
 
-            // Размер
-            $table->float('value');
+            // Надо
+            $table->float('need_pay');
             // Начислено
-            $table->float('accrual');
+            $table->float('current_pay');
             // Выплачено
-            $table->float('pay');
+            $table->float('pay_out');
+
+            // Баланс
+            $table->float('balance');
 
             $table->string('description')->nullable();
             $table->string('comment')->nullable();
